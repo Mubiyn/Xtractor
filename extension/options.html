@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extractor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="hero">
+        <h1>Extractor</h1>
+        <p class="sub">Extract your social data locally. <b>Available now:</b> X &middot; Bookmarks.</p>
+      </header>
+
+      <section class="step" id="connection">
+        <div class="status-row">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Checking connection&hellip;</span>
+        </div>
+        <ol class="hint" id="connectHint">
+          <li>Open <a href="https://x.com/i/bookmarks" target="_blank" rel="noopener">x.com/i/bookmarks</a> while logged in.</li>
+          <li>Let the page load your bookmarks once.</li>
+          <li>Come back here &mdash; the status turns green automatically.</li>
+        </ol>
+      </section>
+
+      <section class="step">
+        <button id="fetchBtn" class="primary" disabled>Fetch my bookmarks</button>
+        <button id="loadPrevBtn" class="ghost" hidden>Use last fetched data</button>
+        <label class="check"><input type="checkbox" id="foldersChk" checked /> Include folders (X Premium)</label>
+        <div class="progress" id="progress" hidden>
+          <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+          <div class="progress-text" id="progressText">Starting&hellip;</div>
+        </div>
+      </section>
+
+      <section class="step" id="exportStep" hidden>
+        <div class="row">
+          <div class="field">
+            <label for="formatSel">Format</label>
+            <select id="formatSel"></select>
+          </div>
+          <div class="field">
+            <label for="folderSel">Folder</label>
+            <select id="folderSel"><option value="">All bookmarks</option></select>
+          </div>
+        </div>
+        <button id="downloadBtn" class="primary">Download export</button>
+        <p class="count" id="exportCount"></p>
+      </section>
+
+      <section class="step danger-zone">
+        <button id="clearBtn" class="ghost">Clear stored data</button>
+      </section>
+
+      <footer class="foot">
+        <span id="errorBox" class="error" hidden></span>
+        <p class="fine">Your credentials never leave this browser. No servers, no tracking. Uses X's internal endpoints for personal data export &mdash; see the README.</p>
+      </footer>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

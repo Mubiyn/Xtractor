@@ -1,0 +1,17 @@
+{
+  "name": "extractor",
+  "version": "1.0.0",
+  "description": "Extract your social data — bookmarks, likes, posts — from any platform. Local-only, multi-format export.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.cjs",
+    "test": "node tests/bookmarklet.mjs && node tests/extension.mjs",
+    "icons": "node extension/scripts/gen-icons.cjs",
+    "package:extension": "node scripts/package-extension.cjs",
+    "serve": "python3 -m http.server 8765",
+    "deploy": "node build.cjs && npx --yes firebase-tools@latest deploy --only hosting",
+    "dev": "bash dev.sh"
+  }
+}

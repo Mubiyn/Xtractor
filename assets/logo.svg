@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Extractor logo">
+  <rect width="128" height="128" rx="28" fill="#1d9bf0"/>
+  <g fill="#ffffff">
+    <rect x="22" y="34" width="54" height="13" rx="3.5" opacity="0.95"/>
+    <rect x="22" y="52" width="46" height="13" rx="3.5" opacity="0.82"/>
+    <rect x="22" y="70" width="38" height="13" rx="3.5" opacity="0.68"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74 58.5h30"/>
+    <path d="M90 44.5l16 14-16 14"/>
+  </g>
+</svg>

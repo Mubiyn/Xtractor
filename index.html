@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extractor &mdash; export your social data locally</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --accent: #1d9bf0;
+      --bg: #0f1419;
+      --card: #15202b;
+      --border: #38444d;
+      --muted: #8899a6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: #e7e9ea;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    h1 {
+      font-size: 40px;
+      line-height: 1.1;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 40px 0 12px;
+    }
+
+    .lede {
+      font-size: 19px;
+      color: var(--muted);
+      margin: 0 0 36px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .install {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      text-align: center;
+      margin: 28px 0;
+    }
+
+    .drag-hint {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0 0 18px;
+    }
+
+    .bookmarklet {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: grab;
+      user-select: none;
+      box-shadow: 0 6px 20px rgba(29, 155, 240, .4);
+    }
+
+    .bookmarklet:active {
+      cursor: grabbing;
+    }
+
+    .noclick {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 16px 0 0;
+    }
+
+    ol {
+      padding-left: 22px;
+    }
+
+    ol li {
+      margin: 10px 0;
+    }
+
+    .pill {
+      background: #2f3b47;
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-size: 14px;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .fmt {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .fmt b {
+      display: block;
+    }
+
+    .fmt span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .note {
+      background: #1c2b22;
+      border: 1px solid #2f5a3f;
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 15px;
+      color: #b9d9c4;
+    }
+
+    .warn {
+      background: #2b2417;
+      border: 1px solid #5a4a2f;
+      color: #ded2b9;
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 15px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 48px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    code {
+      background: #2f3b47;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .illus {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 12px 0 0;
+      border-radius: 12px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 32px 0;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 24px 20px;
+    }
+
+    .step-card.done {
+      border-color: #2f5a3f;
+      background: linear-gradient(180deg, #15202b 0%, #1a2820 100%);
+    }
+
+    .step-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 4px;
+    }
+
+    .step-num {
+      flex: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      display: grid;
+      place-items: center;
+      margin-top: 2px;
+    }
+
+    .step-card.done .step-num {
+      background: #00ba7c;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+
+    .step-body {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0;
+      padding-left: 46px;
+    }
+
+    .step-body b,
+    .step-body a {
+      color: #e7e9ea;
+    }
+
+    .install-inline {
+      text-align: center;
+      margin: 16px 0 8px;
+      padding-left: 0;
+    }
+
+    .coming-soon {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      padding: 22px 24px;
+      opacity: 0.85;
+    }
+
+    .badge-soon {
+      display: inline-block;
+      background: #2f3b47;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .important {
+      background: #2b2417;
+      border: 1px solid #5a4a2f;
+      color: #ded2b9;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 14px;
+      margin: 16px 0 0;
+      text-align: left;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 16px 0 32px;
+    }
+
+    .platform-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    .platform-card.available {
+      border-color: #2f5a3f;
+      background: linear-gradient(180deg, var(--card) 0%, #1a2820 100%);
+    }
+
+    .platform-card.soon {
+      opacity: 0.72;
+      border-style: dashed;
+    }
+
+    .platform-card b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .platform-card span.data {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .platform-card.available .platform-badge {
+      background: #1c3d2a;
+      color: #00ba7c;
+    }
+
+    .platform-card.soon .platform-badge {
+      background: #2f3b47;
+      color: var(--muted);
+    }
+
+    .section-lede {
+      color: var(--muted);
+      font-size: 16px;
+      margin: -4px 0 0;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <img class="logo" src="assets/logo.svg" width="56" height="56" alt="" />
+    <h1>Extractor</h1>
+    <p class="lede">Extract your social data &mdash; bookmarks, likes, posts, reposts &mdash; from any platform,
+      in any format. Free, runs entirely in your browser, nothing uploaded.</p>
+
+    <h2>Platforms &amp; data types</h2>
+    <p class="section-lede">We ship one extractor at a time. X bookmarks is live today; more platforms and data types
+      are on the way.</p>
+    <div class="platform-grid">
+      <div class="platform-card available">
+        <span class="platform-badge">Available</span>
+        <b>X (Twitter)</b>
+        <span class="data">Bookmarks &middot; folders</span>
+      </div>
+      <div class="platform-card soon">
+        <span class="platform-badge">Coming soon</span>
+        <b>X</b>
+        <span class="data">Likes &middot; reposts &middot; your posts</span>
+      </div>
+      <div class="platform-card soon">
+        <span class="platform-badge">Coming soon</span>
+        <b>Bluesky</b>
+        <span class="data">Bookmarks &middot; likes &middot; feeds</span>
+      </div>
+      <div class="platform-card soon">
+        <span class="platform-badge">Coming soon</span>
+        <b>Reddit</b>
+        <span class="data">Saved posts &middot; comments</span>
+      </div>
+      <div class="platform-card soon">
+        <span class="platform-badge">Coming soon</span>
+        <b>LinkedIn</b>
+        <span class="data">Saved posts &middot; connections</span>
+      </div>
+      <div class="platform-card soon">
+        <span class="platform-badge">Coming soon</span>
+        <b>More platforms</b>
+        <span class="data">Tell us what you need</span>
+      </div>
+    </div>
+
+    <h2>X bookmarks &mdash; get started</h2>
+    <p class="section-lede">Four steps to export your full X bookmark collection (including Premium folders).</p>
+
+    <div class="important">
+      <b>Don&rsquo;t click the blue button on this page.</b> Drag it to your bookmarks bar (step&nbsp;1), then use it
+      on <a href="https://x.com/i/bookmarks" target="_blank" rel="noopener">x.com/i/bookmarks</a>.
+    </div>
+
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">1</span>
+          <div>
+            <p class="step-title">Drag the blue button onto your bookmarks bar</p>
+            <p class="step-body">Do this once. Press <span class="pill">Ctrl/&#8984; + Shift + B</span> if you don&rsquo;t
+              see the bar.</p>
+          </div>
+        </div>
+
+        <svg class="illus" viewBox="0 0 620 250" role="img"
+          aria-label="Drag the Extractor bookmarklet up into your browser bookmarks bar.">
+          <rect x="10" y="12" width="600" height="78" rx="12" fill="#1b2733" stroke="#38444d" />
+          <circle cx="34" cy="30" r="5" fill="#3d4b59" />
+          <circle cx="52" cy="30" r="5" fill="#3d4b59" />
+          <circle cx="70" cy="30" r="5" fill="#3d4b59" />
+          <rect x="92" y="22" width="496" height="16" rx="8" fill="#2f3b47" />
+          <rect x="24" y="58" width="74" height="22" rx="6" fill="#22303c" />
+          <text x="61" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#8899a6">&#9733; News</text>
+          <rect x="106" y="58" width="74" height="22" rx="6" fill="#22303c" />
+          <text x="143" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#8899a6">&#9733; Docs</text>
+          <rect x="190" y="56" width="170" height="26" rx="8" fill="rgba(29,155,240,.12)" stroke="#1d9bf0"
+            stroke-width="2" stroke-dasharray="6 5" />
+          <text x="275" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#1d9bf0">drop here</text>
+          <rect x="372" y="58" width="74" height="22" rx="6" fill="#22303c" />
+          <text x="409" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#8899a6">&#9733; Mail</text>
+          <path d="M300 176 C 250 150, 250 110, 276 92" fill="none" stroke="#1d9bf0" stroke-width="2.5"
+            stroke-dasharray="2 7" stroke-linecap="round" />
+          <path d="M276 92 l 9 9 M276 92 l -2 12" fill="none" stroke="#1d9bf0" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" />
+          <text x="330" y="140" font-family="system-ui,sans-serif" font-size="13" font-weight="600"
+            fill="#1d9bf0">drag up</text>
+          <g>
+            <rect x="196" y="176" width="218" height="44" rx="22" fill="#1d9bf0" />
+            <path d="M236 188h8v6l4-3 4 3v-6h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" fill="#fff" opacity="0.9"/>
+            <text x="312" y="203" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15"
+              font-weight="700" fill="#fff">Extractor</text>
+          </g>
+          <path d="M408 198 l 0 30 l 8 -8 l 6 12 l 5 -2 l -6 -12 l 11 0 z" fill="#fff" stroke="#0f1419"
+            stroke-width="1.5" stroke-linejoin="round" />
+        </svg>
+
+        <p class="step-body install-inline">Drag this button &uarr;</p>
+        <!-- href is generated by build.cjs; run: node build.cjs -->
+        <p class="step-body install-inline">
+          <a class="bookmarklet" id="xbe-bookmarklet"
+        href="javascript:void%20function()%7Bvar%20XBE_APP_NAME%20%3D%20%22Extractor%22%3B%0Avar%20XBE_EXPORT_LABEL%20%3D%20%22X%20%5Cu00b7%20Bookmarks%22%3B%0Afunction%20xbeExportBasename()%20%7B%0Areturn%20%22extractor-x-bookmarks-%22%20%2B%20xbeSlug()%3B%0A%7D%0Avar%20XBE_BEARER%20%3D%20%22AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA%22%3B%0Avar%20XBE_FALLBACK_FEATURES%20%3D%20%7B%0Agraphql_timeline_v2_bookmark_timeline%3A%20true%2C%0Aresponsive_web_graphql_exclude_directive_enabled%3A%20true%2C%0Averified_phone_label_enabled%3A%20false%2C%0Acreator_subscriptions_tweet_preview_api_enabled%3A%20true%2C%0Aresponsive_web_graphql_timeline_navigation_enabled%3A%20true%2C%0Aresponsive_web_graphql_skip_user_profile_image_extensions_enabled%3A%20false%2C%0Ac9s_tweet_anatomy_moderator_badge_enabled%3A%20true%2C%0Atweetypie_unmention_optimization_enabled%3A%20true%2C%0Aresponsive_web_edit_tweet_api_enabled%3A%20true%2C%0Agraphql_is_translatable_rweb_tweet_is_translatable_enabled%3A%20true%2C%0Aview_counts_everywhere_api_enabled%3A%20true%2C%0Alongform_notetweets_consumption_enabled%3A%20true%2C%0Aresponsive_web_twitter_article_tweet_consumption_enabled%3A%20true%2C%0Atweet_awards_web_tipping_enabled%3A%20false%2C%0Afreedom_of_speech_not_reach_fetch_enabled%3A%20true%2C%0Astandardized_nudges_misinfo%3A%20true%2C%0Atweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled%3A%20true%2C%0Arweb_video_timestamps_enabled%3A%20true%2C%0Alongform_notetweets_rich_text_read_enabled%3A%20true%2C%0Alongform_notetweets_inline_media_enabled%3A%20true%2C%0Aresponsive_web_enhance_cards_enabled%3A%20false%0A%7D%3B%0Afunction%20xbeEscapeHtml(s)%20%7B%0Areturn%20String(s%20%3D%3D%20null%20%3F%20%22%22%20%3A%20s)%0A.replace(%2F%26%2Fg%2C%20%22%26amp%3B%22)%0A.replace(%2F%3C%2Fg%2C%20%22%26lt%3B%22)%0A.replace(%2F%3E%2Fg%2C%20%22%26gt%3B%22)%0A.replace(%2F%22%2Fg%2C%20%22%26quot%3B%22)%0A.replace(%2F'%2Fg%2C%20%22%26%2339%3B%22)%3B%0A%7D%0Afunction%20xbeFmtDate(s)%20%7B%0Aif%20(!s)%20return%20%22%22%3B%0Avar%20d%20%3D%20new%20Date(s)%3B%0Areturn%20isNaN(d)%20%3F%20String(s)%20%3A%20d.toISOString()%3B%0A%7D%0Afunction%20xbeMetricsLine(m)%20%7B%0Aif%20(!m)%20return%20%22%22%3B%0Avar%20p%20%3D%20%5B%5D%3B%0Aif%20(m.likes%20!%3D%20null)%20p.push(m.likes%20%2B%20%22%20likes%22)%3B%0Aif%20(m.reposts%20!%3D%20null)%20p.push(m.reposts%20%2B%20%22%20reposts%22)%3B%0Aif%20(m.replies%20!%3D%20null)%20p.push(m.replies%20%2B%20%22%20replies%22)%3B%0Aif%20(m.views%20!%3D%20null)%20p.push(m.views%20%2B%20%22%20views%22)%3B%0Areturn%20p.join(%22%20%5Cu00b7%20%22)%3B%0A%7D%0Afunction%20xbeSlug()%20%7B%0Areturn%20new%20Date().toISOString().replace(%2F%5B%3A.%5D%2Fg%2C%20%22-%22).slice(0%2C%2019)%3B%0A%7D%0Afunction%20xbeSleep(ms)%20%7B%0Areturn%20new%20Promise(function%20(r)%20%7B%20setTimeout(r%2C%20ms)%3B%20%7D)%3B%0A%7D%0Afunction%20xbeFindInstructions(json)%20%7B%0Avar%20out%20%3D%20%5B%5D%3B%0Avar%20stack%20%3D%20%5Bjson%5D%3B%0Avar%20seen%20%3D%20new%20Set()%3B%0Awhile%20(stack.length)%20%7B%0Avar%20node%20%3D%20stack.pop()%3B%0Aif%20(!node%20%7C%7C%20typeof%20node%20!%3D%3D%20%22object%22%20%7C%7C%20seen.has(node))%20continue%3B%0Aseen.add(node)%3B%0Aif%20(Array.isArray(node.instructions))%20out.push.apply(out%2C%20node.instructions)%3B%0Afor%20(var%20k%20in%20node)%20%7B%0Avar%20v%20%3D%20node%5Bk%5D%3B%0Aif%20(v%20%26%26%20typeof%20v%20%3D%3D%3D%20%22object%22)%20stack.push(v)%3B%0A%7D%0A%7D%0Areturn%20out%3B%0A%7D%0Afunction%20xbeCollectEntries(json)%20%7B%0Avar%20entries%20%3D%20%5B%5D%3B%0Avar%20ins%20%3D%20xbeFindInstructions(json)%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20ins.length%3B%20i%2B%2B)%20%7B%0Aif%20(ins%5Bi%5D%20%26%26%20Array.isArray(ins%5Bi%5D.entries))%20entries.push.apply(entries%2C%20ins%5Bi%5D.entries)%3B%0Aif%20(ins%5Bi%5D%20%26%26%20ins%5Bi%5D.entry)%20entries.push(ins%5Bi%5D.entry)%3B%0A%7D%0Areturn%20entries%3B%0A%7D%0Afunction%20extractCursor(json)%20%7B%0Avar%20entries%20%3D%20xbeCollectEntries(json)%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20entries.length%3B%20i%2B%2B)%20%7B%0Avar%20c%20%3D%20entries%5Bi%5D%20%26%26%20entries%5Bi%5D.content%3B%0Aif%20(!c)%20continue%3B%0Aif%20(c.cursorType%20%3D%3D%3D%20%22Bottom%22%20%26%26%20c.value)%20return%20c.value%3B%0Avar%20it%20%3D%20c.itemContent%3B%0Aif%20(it%20%26%26%20it.cursorType%20%3D%3D%3D%20%22Bottom%22%20%26%26%20it.value)%20return%20it.value%3B%0A%7D%0Areturn%20null%3B%0A%7D%0Afunction%20xbeUnwrap(result)%20%7B%0Aif%20(!result)%20return%20null%3B%0Aif%20(result.__typename%20%3D%3D%3D%20%22TweetWithVisibilityResults%22%20%26%26%20result.tweet)%20return%20result.tweet%3B%0Aif%20(result.tweet%20%26%26%20result.tweet.legacy%20%26%26%20!result.legacy)%20return%20result.tweet%3B%0Areturn%20result%3B%0A%7D%0Afunction%20xbeAuthor(t)%20%7B%0Avar%20ur%20%3D%20t%20%26%26%20t.core%20%26%26%20t.core.user_results%20%26%26%20t.core.user_results.result%3B%0Aif%20(!ur)%20return%20%7B%20name%3A%20null%2C%20handle%3A%20null%2C%20userId%3A%20null%20%7D%3B%0Avar%20lg%20%3D%20ur.legacy%20%7C%7C%20%7B%7D%3B%0Avar%20co%20%3D%20ur.core%20%7C%7C%20%7B%7D%3B%0Areturn%20%7B%0Aname%3A%20co.name%20%7C%7C%20lg.name%20%7C%7C%20null%2C%0Ahandle%3A%20co.screen_name%20%7C%7C%20lg.screen_name%20%7C%7C%20null%2C%0AuserId%3A%20ur.rest_id%20%7C%7C%20null%0A%7D%3B%0A%7D%0Afunction%20xbeText(t)%20%7B%0Avar%20note%20%3D%20t%20%26%26%20t.note_tweet%20%26%26%20t.note_tweet.note_tweet_results%20%26%26%20t.note_tweet.note_tweet_results.result%3B%0Aif%20(note%20%26%26%20note.text)%20return%20note.text%3B%0Areturn%20(t%20%26%26%20t.legacy%20%26%26%20t.legacy.full_text)%20%7C%7C%20%22%22%3B%0A%7D%0Afunction%20xbeExpandUrls(text%2C%20legacy)%20%7B%0Aif%20(!text%20%7C%7C%20!legacy%20%7C%7C%20!legacy.entities)%20return%20text%3B%0Avar%20out%20%3D%20text%3B%0Avar%20urls%20%3D%20legacy.entities.urls%20%7C%7C%20%5B%5D%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20urls.length%3B%20i%2B%2B)%20%7B%0Aif%20(urls%5Bi%5D.url%20%26%26%20urls%5Bi%5D.expanded_url)%20out%20%3D%20out.split(urls%5Bi%5D.url).join(urls%5Bi%5D.expanded_url)%3B%0A%7D%0Avar%20media%20%3D%20(legacy.extended_entities%20%26%26%20legacy.extended_entities.media)%20%7C%7C%20%5B%5D%3B%0Afor%20(var%20j%20%3D%200%3B%20j%20%3C%20media.length%3B%20j%2B%2B)%20%7B%0Aif%20(media%5Bj%5D.url)%20out%20%3D%20out.split(media%5Bj%5D.url).join(%22%22).trim()%3B%0A%7D%0Areturn%20out%3B%0A%7D%0Afunction%20xbeMedia(t)%20%7B%0Avar%20lg%20%3D%20(t%20%26%26%20t.legacy)%20%7C%7C%20%7B%7D%3B%0Avar%20media%20%3D%20(lg.extended_entities%20%26%26%20lg.extended_entities.media)%20%7C%7C%20(lg.entities%20%26%26%20lg.entities.media)%20%7C%7C%20%5B%5D%3B%0Areturn%20media.map(function%20(m)%20%7B%0Aif%20(m.type%20%3D%3D%3D%20%22video%22%20%7C%7C%20m.type%20%3D%3D%3D%20%22animated_gif%22)%20%7B%0Avar%20variants%20%3D%20(m.video_info%20%26%26%20m.video_info.variants)%20%7C%7C%20%5B%5D%3B%0Avar%20best%20%3D%20variants.filter(function%20(v)%20%7B%20return%20v.bitrate%20!%3D%20null%3B%20%7D)%0A.sort(function%20(a%2C%20b)%20%7B%20return%20b.bitrate%20-%20a.bitrate%3B%20%7D)%5B0%5D%3B%0Areturn%20%7B%20type%3A%20m.type%2C%20thumbnail%3A%20m.media_url_https%20%7C%7C%20null%2C%20url%3A%20(best%20%26%26%20best.url)%20%7C%7C%20m.media_url_https%20%7C%7C%20null%20%7D%3B%0A%7D%0Areturn%20%7B%20type%3A%20m.type%20%7C%7C%20%22photo%22%2C%20url%3A%20m.media_url_https%20%7C%7C%20null%20%7D%3B%0A%7D)%3B%0A%7D%0Afunction%20xbeLinks(t)%20%7B%0Avar%20lg%20%3D%20(t%20%26%26%20t.legacy)%20%7C%7C%20%7B%7D%3B%0Avar%20urls%20%3D%20(lg.entities%20%26%26%20lg.entities.urls)%20%7C%7C%20%5B%5D%3B%0Areturn%20urls.map(function%20(u)%20%7B%20return%20u.expanded_url%3B%20%7D).filter(Boolean)%3B%0A%7D%0Afunction%20normalize(result%2C%20depth)%20%7B%0Adepth%20%3D%20depth%20%7C%7C%200%3B%0Avar%20t%20%3D%20xbeUnwrap(result)%3B%0Aif%20(!t)%20return%20null%3B%0Avar%20lg%20%3D%20t.legacy%20%7C%7C%20%7B%7D%3B%0Avar%20id%20%3D%20t.rest_id%20%7C%7C%20lg.id_str%3B%0Aif%20(!id)%20return%20null%3B%0Avar%20author%20%3D%20xbeAuthor(t)%3B%0Avar%20text%20%3D%20xbeExpandUrls(xbeText(t)%2C%20lg)%3B%0Avar%20views%20%3D%20t.views%20%26%26%20t.views.count%20!%3D%20null%20%3F%20Number(t.views.count)%20%3A%20null%3B%0Avar%20quoted%20%3D%20null%3B%0Aif%20(depth%20%3C%201)%20%7B%0Avar%20qr%20%3D%20(t.quoted_status_result%20%26%26%20t.quoted_status_result.result)%20%7C%7C%20null%3B%0Aif%20(qr)%20quoted%20%3D%20normalize(qr%2C%20depth%20%2B%201)%3B%0A%7D%0Areturn%20%7B%0Aid%3A%20String(id)%2C%0Aurl%3A%20author.handle%20%3F%20%22https%3A%2F%2Fx.com%2F%22%20%2B%20author.handle%20%2B%20%22%2Fstatus%2F%22%20%2B%20id%20%3A%20%22https%3A%2F%2Fx.com%2Fi%2Fstatus%2F%22%20%2B%20id%2C%0Atext%3A%20text%2C%0AcreatedAt%3A%20lg.created_at%20%7C%7C%20null%2C%0Aauthor%3A%20author%2C%0Ametrics%3A%20%7B%0Areplies%3A%20lg.reply_count%20!%3D%20null%20%3F%20lg.reply_count%20%3A%20null%2C%0Areposts%3A%20lg.retweet_count%20!%3D%20null%20%3F%20lg.retweet_count%20%3A%20null%2C%0Alikes%3A%20lg.favorite_count%20!%3D%20null%20%3F%20lg.favorite_count%20%3A%20null%2C%0Aquotes%3A%20lg.quote_count%20!%3D%20null%20%3F%20lg.quote_count%20%3A%20null%2C%0Abookmarks%3A%20lg.bookmark_count%20!%3D%20null%20%3F%20lg.bookmark_count%20%3A%20null%2C%0Aviews%3A%20views%0A%7D%2C%0Amedia%3A%20xbeMedia(t)%2C%0Alinks%3A%20xbeLinks(t)%2C%0AisLongform%3A%20Boolean(t.note_tweet)%2C%0Aquoted%3A%20quoted%2C%0Afolder%3A%20null%0A%7D%3B%0A%7D%0Afunction%20extractTweetEntries(json)%20%7B%0Avar%20records%20%3D%20%5B%5D%3B%0Avar%20entries%20%3D%20xbeCollectEntries(json)%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20entries.length%3B%20i%2B%2B)%20%7B%0Avar%20entryId%20%3D%20(entries%5Bi%5D%20%26%26%20entries%5Bi%5D.entryId)%20%7C%7C%20%22%22%3B%0Aif%20(entryId.indexOf(%22tweet-%22)%20!%3D%3D%200%20%26%26%20entryId.indexOf(%22bookmark-%22)%20!%3D%3D%200)%20continue%3B%0Avar%20content%20%3D%20entries%5Bi%5D.content%20%7C%7C%20%7B%7D%3B%0Avar%20item%20%3D%20content.itemContent%20%7C%7C%20(content.item%20%26%26%20content.item.itemContent)%3B%0Avar%20result%20%3D%20item%20%26%26%20item.tweet_results%20%26%26%20item.tweet_results.result%3B%0Avar%20rec%20%3D%20normalize(result)%3B%0Aif%20(rec)%20records.push(rec)%3B%0A%7D%0Areturn%20records%3B%0A%7D%0Afunction%20xbeRenderJSON(records)%20%7B%0Areturn%20JSON.stringify(%7B%20exportedAt%3A%20new%20Date().toISOString()%2C%20count%3A%20records.length%2C%20bookmarks%3A%20records%20%7D%2C%20null%2C%202)%3B%0A%7D%0Afunction%20xbeRenderNDJSON(records)%20%7B%0Areturn%20records.map(function%20(r)%20%7B%20return%20JSON.stringify(r)%3B%20%7D).join(%22%5Cn%22)%3B%0A%7D%0Afunction%20xbeCsvCell(v)%20%7B%0Avar%20s%20%3D%20v%20%3D%3D%20null%20%3F%20%22%22%20%3A%20String(v)%3B%0Aif%20(%2F%5B%22%2C%5Cn%5Cr%5D%2F.test(s))%20return%20'%22'%20%2B%20s.replace(%2F%22%2Fg%2C%20'%22%22')%20%2B%20'%22'%3B%0Areturn%20s%3B%0A%7D%0Afunction%20xbeRenderCSV(records)%20%7B%0Avar%20cols%20%3D%20%5B%22id%22%2C%20%22url%22%2C%20%22author_name%22%2C%20%22author_handle%22%2C%20%22created_at%22%2C%20%22text%22%2C%20%22folder%22%2C%20%22likes%22%2C%20%22reposts%22%2C%20%22replies%22%2C%20%22views%22%2C%20%22media_urls%22%2C%20%22links%22%5D%3B%0Avar%20rows%20%3D%20records.map(function%20(r)%20%7B%0Areturn%20%5B%0Ar.id%2C%20r.url%2C%20r.author%20%26%26%20r.author.name%2C%20r.author%20%26%26%20r.author.handle%2C%20xbeFmtDate(r.createdAt)%2C%0Ar.text%2C%20r.folder%20%7C%7C%20%22%22%2C%20r.metrics%20%26%26%20r.metrics.likes%2C%20r.metrics%20%26%26%20r.metrics.reposts%2C%0Ar.metrics%20%26%26%20r.metrics.replies%2C%20r.metrics%20%26%26%20r.metrics.views%2C%0A(r.media%20%7C%7C%20%5B%5D).map(function%20(m)%20%7B%20return%20m.url%3B%20%7D).filter(Boolean).join(%22%20%22)%2C%0A(r.links%20%7C%7C%20%5B%5D).join(%22%20%22)%0A%5D.map(xbeCsvCell).join(%22%2C%22)%3B%0A%7D)%3B%0Areturn%20%22%5CuFEFF%22%20%2B%20%5Bcols.join(%22%2C%22)%5D.concat(rows).join(%22%5Cr%5Cn%22)%3B%0A%7D%0Afunction%20xbeRenderMarkdown(records)%20%7B%0Afunction%20quoted(q)%20%7B%0Aif%20(!q)%20return%20%22%22%3B%0Avar%20who%20%3D%20q.author%20%26%26%20q.author.handle%20%3F%20%22%40%22%20%2B%20q.author.handle%20%3A%20%22unknown%22%3B%0Avar%20text%20%3D%20(q.text%20%7C%7C%20%22%22).split(%22%5Cn%22).map(function%20(l)%20%7B%20return%20%22%3E%20%22%20%2B%20l%3B%20%7D).join(%22%5Cn%22)%3B%0Areturn%20%22%5Cn%3E%20**Quoting%20%22%20%2B%20who%20%2B%20%22**%20(%5Blink%5D(%22%20%2B%20q.url%20%2B%20%22))%5Cn%22%20%2B%20text%20%2B%20%22%5Cn%22%3B%0A%7D%0Afunction%20entry(r)%20%7B%0Avar%20who%20%3D%20r.author%20%26%26%20r.author.name%20%3F%20r.author.name%20%3A%20%22Unknown%22%3B%0Avar%20handle%20%3D%20r.author%20%26%26%20r.author.handle%20%3F%20%22%40%22%20%2B%20r.author.handle%20%3A%20%22%22%3B%0Avar%20lines%20%3D%20%5B%5D%3B%0Alines.push((%22%23%23%20%22%20%2B%20who%20%2B%20%22%20%22%20%2B%20handle).trim())%3B%0Aif%20(r.folder)%20lines.push(%22*Folder%3A%20%22%20%2B%20r.folder%20%2B%20%22*%22)%3B%0Aif%20(r.createdAt)%20lines.push(%22*%22%20%2B%20xbeFmtDate(r.createdAt)%20%2B%20%22*%22)%3B%0Alines.push(%22%22)%3B%0Alines.push(r.text%20%7C%7C%20%22%22)%3B%0Alines.push(quoted(r.quoted))%3B%0Avar%20media%20%3D%20(r.media%20%7C%7C%20%5B%5D).map(function%20(m)%20%7B%20return%20m.url%3B%20%7D).filter(Boolean)%3B%0Aif%20(media.length)%20%7B%20lines.push(%22%22)%3B%20lines.push(media.map(function%20(u)%20%7B%20return%20%22!%5Bmedia%5D(%22%20%2B%20u%20%2B%20%22)%22%3B%20%7D).join(%22%5Cn%22))%3B%20%7D%0Aif%20((r.links%20%7C%7C%20%5B%5D).length)%20%7B%20lines.push(%22%22)%3B%20lines.push(%22Links%3A%20%22%20%2B%20r.links.map(function%20(u)%20%7B%20return%20%22%3C%22%20%2B%20u%20%2B%20%22%3E%22%3B%20%7D).join(%22%2C%20%22))%3B%20%7D%0Avar%20m%20%3D%20xbeMetricsLine(r.metrics)%3B%0Alines.push(%22%22)%3B%0Alines.push(%22%5BView%20on%20X%5D(%22%20%2B%20r.url%20%2B%20%22)%22%20%2B%20(m%20%3F%20%22%20%5Cu00b7%20%22%20%2B%20m%20%3A%20%22%22))%3B%0Areturn%20lines.join(%22%5Cn%22)%3B%0A%7D%0Avar%20header%20%3D%20%22%23%20%22%20%2B%20XBE_EXPORT_LABEL%20%2B%20%22%5Cn%5CnExported%20%22%20%2B%20new%20Date().toISOString()%20%2B%20%22%20%5Cu00b7%20%22%20%2B%20records.length%20%2B%20%22%20bookmarks%5Cn%5Cn---%5Cn%22%3B%0Areturn%20header%20%2B%20records.map(entry).join(%22%5Cn%5Cn---%5Cn%5Cn%22)%20%2B%20%22%5Cn%22%3B%0A%7D%0Afunction%20xbeRenderTxt(records)%20%7B%0Afunction%20entry(r%2C%20i)%20%7B%0Avar%20who%20%3D%20r.author%20%26%26%20r.author.handle%20%3F%20%22%40%22%20%2B%20r.author.handle%20%3A%20%22unknown%22%3B%0Avar%20name%20%3D%20r.author%20%26%26%20r.author.name%20%3F%20r.author.name%20%3A%20%22%22%3B%0Avar%20p%20%3D%20%5B%5D%3B%0Ap.push(%22%23%22%20%2B%20(i%20%2B%201)%20%2B%20%22%20%22%20%2B%20name%20%2B%20%22%20(%22%20%2B%20who%20%2B%20%22)%22)%3B%0Aif%20(r.folder)%20p.push(%22Folder%3A%20%22%20%2B%20r.folder)%3B%0Aif%20(r.createdAt)%20p.push(xbeFmtDate(r.createdAt))%3B%0Ap.push(%22%22)%3B%0Ap.push(r.text%20%7C%7C%20%22%22)%3B%0Aif%20(r.quoted)%20%7B%20p.push(%22%22)%3B%20p.push(%22%20%20%3E%20Quoting%20%40%22%20%2B%20(r.quoted.author%20%26%26%20r.quoted.author.handle)%20%2B%20%22%3A%20%22%20%2B%20(r.quoted.text%20%7C%7C%20%22%22))%3B%20%7D%0Aif%20((r.links%20%7C%7C%20%5B%5D).length)%20p.push(%22Links%3A%20%22%20%2B%20r.links.join(%22%2C%20%22))%3B%0Avar%20m%20%3D%20xbeMetricsLine(r.metrics)%3B%0Aif%20(m)%20p.push(m)%3B%0Ap.push(%22URL%3A%20%22%20%2B%20r.url)%3B%0Areturn%20p.join(%22%5Cn%22)%3B%0A%7D%0Avar%20bar%20%3D%20%22------------------------------------------------------------%22%3B%0Avar%20header%20%3D%20XBE_EXPORT_LABEL.toUpperCase()%20%2B%20%22%5CnExported%20%22%20%2B%20new%20Date().toISOString()%20%2B%20%22%20-%20%22%20%2B%20records.length%20%2B%20%22%20bookmarks%5Cn%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%5Cn%22%3B%0Areturn%20header%20%2B%20records.map(entry).join(%22%5Cn%5Cn%22%20%2B%20bar%20%2B%20%22%5Cn%5Cn%22)%20%2B%20%22%5Cn%22%3B%0A%7D%0Afunction%20xbeLinkify(text)%20%7B%0Areturn%20xbeEscapeHtml(text).replace(%2F(https%3F%3A%5C%2F%5C%2F%5B%5E%5Cs%5D%2B)%2Fg%2C%20'%3Ca%20href%3D%22%241%22%20target%3D%22_blank%22%20rel%3D%22noopener%22%3E%241%3C%2Fa%3E')%3B%0A%7D%0Afunction%20xbeRenderHTML(records)%20%7B%0Afunction%20media(r)%20%7B%0Avar%20items%20%3D%20(r.media%20%7C%7C%20%5B%5D).filter(function%20(m)%20%7B%20return%20m.url%3B%20%7D)%3B%0Aif%20(!items.length)%20return%20%22%22%3B%0Avar%20tags%20%3D%20items.map(function%20(m)%20%7B%0Areturn%20(m.type%20%3D%3D%3D%20%22video%22%20%7C%7C%20m.type%20%3D%3D%3D%20%22animated_gif%22)%0A%3F%20'%3Cvideo%20controls%20poster%3D%22'%20%2B%20xbeEscapeHtml(m.thumbnail%20%7C%7C%20%22%22)%20%2B%20'%22%20src%3D%22'%20%2B%20xbeEscapeHtml(m.url)%20%2B%20'%22%3E%3C%2Fvideo%3E'%0A%3A%20'%3Cimg%20loading%3D%22lazy%22%20src%3D%22'%20%2B%20xbeEscapeHtml(m.url)%20%2B%20'%22%20alt%3D%22media%22%3E'%3B%0A%7D).join(%22%22)%3B%0Areturn%20'%3Cdiv%20class%3D%22media%22%3E'%20%2B%20tags%20%2B%20%22%3C%2Fdiv%3E%22%3B%0A%7D%0Afunction%20quoted(q)%20%7B%0Aif%20(!q)%20return%20%22%22%3B%0Avar%20who%20%3D%20q.author%20%26%26%20q.author.handle%20%3F%20%22%40%22%20%2B%20xbeEscapeHtml(q.author.handle)%20%3A%20%22unknown%22%3B%0Areturn%20'%3Cblockquote%20class%3D%22quoted%22%3E%3Cdiv%20class%3D%22qhead%22%3EQuoting%20'%20%2B%20who%20%2B%20'%3C%2Fdiv%3E%3Cdiv%3E'%20%2B%20xbeLinkify(q.text%20%7C%7C%20%22%22)%20%2B%20%22%3C%2Fdiv%3E%3C%2Fblockquote%3E%22%3B%0A%7D%0Afunction%20card(r)%20%7B%0Avar%20name%20%3D%20xbeEscapeHtml((r.author%20%26%26%20r.author.name)%20%7C%7C%20%22Unknown%22)%3B%0Avar%20handle%20%3D%20r.author%20%26%26%20r.author.handle%20%3F%20%22%40%22%20%2B%20xbeEscapeHtml(r.author.handle)%20%3A%20%22%22%3B%0Avar%20folder%20%3D%20r.folder%20%3F%20'%3Cspan%20class%3D%22folder%22%3E'%20%2B%20xbeEscapeHtml(r.folder)%20%2B%20%22%3C%2Fspan%3E%22%20%3A%20%22%22%3B%0Areturn%20'%3Carticle%20class%3D%22card%22%3E%3Cheader%3E%3Cspan%20class%3D%22name%22%3E'%20%2B%20name%20%2B%20'%3C%2Fspan%3E%20%3Cspan%20class%3D%22handle%22%3E'%20%2B%20handle%20%2B%20%22%3C%2Fspan%3E%20%22%20%2B%20folder%20%2B%0A%22%3Ctime%3E%22%20%2B%20xbeEscapeHtml(xbeFmtDate(r.createdAt))%20%2B%20'%3C%2Ftime%3E%3C%2Fheader%3E%3Cdiv%20class%3D%22text%22%3E'%20%2B%20xbeLinkify(r.text%20%7C%7C%20%22%22)%20%2B%20%22%3C%2Fdiv%3E%22%20%2B%0Aquoted(r.quoted)%20%2B%20media(r)%20%2B%20'%3Cfooter%3E%3Ca%20href%3D%22'%20%2B%20xbeEscapeHtml(r.url)%20%2B%20'%22%20target%3D%22_blank%22%20rel%3D%22noopener%22%3EView%20on%20X%3C%2Fa%3E%20%3Cspan%20class%3D%22metrics%22%3E'%20%2B%0AxbeEscapeHtml(xbeMetricsLine(r.metrics))%20%2B%20%22%3C%2Fspan%3E%3C%2Ffooter%3E%3C%2Farticle%3E%22%3B%0A%7D%0Areturn%20'%3C!doctype%20html%3E%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%3Cmeta%20charset%3D%22utf-8%22%3E%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1%22%3E'%20%2B%0A%22%3Ctitle%3E%22%20%2B%20XBE_EXPORT_LABEL%20%2B%20%22%20(%22%20%2B%20records.length%20%2B%20')%3C%2Ftitle%3E%3Cstyle%3E%3Aroot%7Bcolor-scheme%3Alight%20dark%7Dbody%7Bfont%3A16px%2F1.5%20-apple-system%2Csystem-ui%2Csans-serif%3Bmax-width%3A720px%3Bmargin%3A0%20auto%3Bpadding%3A24px%7D'%20%2B%0A%22.card%7Bborder%3A1px%20solid%20%238884%3Bborder-radius%3A12px%3Bpadding%3A16px%3Bmargin%3A0%200%2016px%7D.card%20header%7Bfont-size%3A14px%3Bmargin-bottom%3A8px%7D.name%7Bfont-weight%3A600%7D%22%20%2B%0A%22.handle%2Ctime%2C.metrics%7Bcolor%3A%23888%7D.folder%7Bbackground%3A%238882%3Bborder-radius%3A6px%3Bpadding%3A1px%208px%3Bfont-size%3A12px%7D.text%7Bwhite-space%3Apre-wrap%3Bword-wrap%3Abreak-word%7D%22%20%2B%0A%22.quoted%7Bborder-left%3A3px%20solid%20%238884%3Bmargin%3A12px%200%3Bpadding%3A8px%2012px%3Bcolor%3A%23aaa%7D.media%7Bdisplay%3Agrid%3Bgap%3A8px%3Bmargin-top%3A12px%7D.media%20img%2C.media%20video%7Bwidth%3A100%25%3Bborder-radius%3A10px%7D%22%20%2B%0A%22footer%7Bmargin-top%3A12px%3Bfont-size%3A14px%3Bdisplay%3Aflex%3Bgap%3A12px%7Da%7Bcolor%3A%231d9bf0%3Btext-decoration%3Anone%7D%3C%2Fstyle%3E%3C%2Fhead%3E%3Cbody%3E%3Ch1%3E%22%20%2B%20XBE_EXPORT_LABEL%20%2B%20%22%3C%2Fh1%3E%22%20%2B%0A'%3Cdiv%20class%3D%22meta%22%3EExported%20'%20%2B%20xbeEscapeHtml(new%20Date().toISOString())%20%2B%20%22%20%5Cu00b7%20%22%20%2B%20records.length%20%2B%20%22%20bookmarks%3C%2Fdiv%3E%22%20%2B%0Arecords.map(card).join(%22%5Cn%22)%20%2B%20%22%3C%2Fbody%3E%3C%2Fhtml%3E%22%3B%0A%7D%0Afunction%20xbeRenderDoc(records)%20%7B%0Afunction%20entry(r)%20%7B%0Avar%20name%20%3D%20xbeEscapeHtml((r.author%20%26%26%20r.author.name)%20%7C%7C%20%22Unknown%22)%3B%0Avar%20handle%20%3D%20r.author%20%26%26%20r.author.handle%20%3F%20%22%40%22%20%2B%20xbeEscapeHtml(r.author.handle)%20%3A%20%22%22%3B%0Avar%20meta%20%3D%20%5BxbeFmtDate(r.createdAt)%2C%20r.folder%20%3F%20%22Folder%3A%20%22%20%2B%20r.folder%20%3A%20%22%22%2C%20xbeMetricsLine(r.metrics)%5D%0A.filter(Boolean).map(xbeEscapeHtml).join(%22%20%5Cu00b7%20%22)%3B%0Avar%20text%20%3D%20xbeEscapeHtml(r.text%20%7C%7C%20%22%22).replace(%2F%5Cn%2Fg%2C%20%22%3Cbr%3E%22)%3B%0Avar%20links%20%3D%20(r.links%20%7C%7C%20%5B%5D).length%0A%3F%20'%3Cp%20style%3D%22font-size%3A10pt%3Bcolor%3A%23555%3B%22%3ELinks%3A%20'%20%2B%20r.links.map(function%20(u)%20%7B%20return%20'%3Ca%20href%3D%22'%20%2B%20xbeEscapeHtml(u)%20%2B%20'%22%3E'%20%2B%20xbeEscapeHtml(u)%20%2B%20%22%3C%2Fa%3E%22%3B%20%7D).join(%22%2C%20%22)%20%2B%20%22%3C%2Fp%3E%22%0A%3A%20%22%22%3B%0Avar%20quoted%20%3D%20r.quoted%0A%3F%20'%3Cblockquote%20style%3D%22border-left%3A3px%20solid%20%23ccc%3Bmargin%3A6pt%200%3Bpadding-left%3A10pt%3Bcolor%3A%23555%3B%22%3EQuoting%20%40'%20%2B%20xbeEscapeHtml((r.quoted.author%20%26%26%20r.quoted.author.handle)%20%7C%7C%20%22%22)%20%2B%20%22%3A%20%22%20%2B%20xbeEscapeHtml(r.quoted.text%20%7C%7C%20%22%22)%20%2B%20%22%3C%2Fblockquote%3E%22%0A%3A%20%22%22%3B%0Areturn%20'%3Cdiv%20style%3D%22margin-bottom%3A14pt%3B%22%3E%3Cp%20style%3D%22margin%3A0%3B%22%3E%3Cb%3E'%20%2B%20name%20%2B%20'%3C%2Fb%3E%20%3Cspan%20style%3D%22color%3A%23888%3B%22%3E'%20%2B%20handle%20%2B%20%22%3C%2Fspan%3E%3C%2Fp%3E%22%20%2B%0A'%3Cp%20style%3D%22margin%3A0%200%204pt%3Bfont-size%3A9pt%3Bcolor%3A%23888%3B%22%3E'%20%2B%20meta%20%2B%20'%3C%2Fp%3E%3Cp%20style%3D%22margin%3A0%3B%22%3E'%20%2B%20text%20%2B%20%22%3C%2Fp%3E%22%20%2B%20quoted%20%2B%20links%20%2B%0A'%3Cp%20style%3D%22margin%3A2pt%200%200%3Bfont-size%3A9pt%3B%22%3E%3Ca%20href%3D%22'%20%2B%20xbeEscapeHtml(r.url)%20%2B%20'%22%3EView%20on%20X%3C%2Fa%3E%3C%2Fp%3E%3C%2Fdiv%3E'%3B%0A%7D%0Areturn%20'%3Chtml%20xmlns%3Ao%3D%22urn%3Aschemas-microsoft-com%3Aoffice%3Aoffice%22%20xmlns%3Aw%3D%22urn%3Aschemas-microsoft-com%3Aoffice%3Aword%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2FTR%2FREC-html40%22%3E'%20%2B%0A'%3Chead%3E%3Cmeta%20charset%3D%22utf-8%22%3E%3Ctitle%3E'%20%2B%20XBE_EXPORT_LABEL%20%2B%20'%3C%2Ftitle%3E%3C%2Fhead%3E%3Cbody%20style%3D%22font-family%3ACalibri%2CArial%2Csans-serif%3Bfont-size%3A11pt%3B%22%3E'%20%2B%0A'%3Ch1%20style%3D%22font-size%3A18pt%3B%22%3E'%20%2B%20XBE_EXPORT_LABEL%20%2B%20'%3C%2Fh1%3E%3Cp%20style%3D%22color%3A%23888%3B%22%3EExported%20'%20%2B%20xbeEscapeHtml(new%20Date().toISOString())%20%2B%20%22%20%5Cu00b7%20%22%20%2B%20records.length%20%2B%20%22%20bookmarks%3C%2Fp%3E%3Chr%3E%22%20%2B%0Arecords.map(entry).join(%22%5Cn%22)%20%2B%20%22%3C%2Fbody%3E%3C%2Fhtml%3E%22%3B%0A%7D%0Avar%20EXPORTERS%20%3D%20%5B%0A%7B%20id%3A%20%22json%22%2C%20label%3A%20%22JSON%20(structured%2C%20full%20data)%22%2C%20ext%3A%20%22json%22%2C%20mime%3A%20%22application%2Fjson%22%2C%20render%3A%20xbeRenderJSON%20%7D%2C%0A%7B%20id%3A%20%22ndjson%22%2C%20label%3A%20%22NDJSON%20(one%20record%20per%20line)%22%2C%20ext%3A%20%22ndjson%22%2C%20mime%3A%20%22application%2Fx-ndjson%22%2C%20render%3A%20xbeRenderNDJSON%20%7D%2C%0A%7B%20id%3A%20%22csv%22%2C%20label%3A%20%22CSV%20(Sheets%20%2F%20Excel)%22%2C%20ext%3A%20%22csv%22%2C%20mime%3A%20%22text%2Fcsv%22%2C%20render%3A%20xbeRenderCSV%20%7D%2C%0A%7B%20id%3A%20%22markdown%22%2C%20label%3A%20%22Markdown%20(Obsidian%20%2F%20Notion)%22%2C%20ext%3A%20%22md%22%2C%20mime%3A%20%22text%2Fmarkdown%22%2C%20render%3A%20xbeRenderMarkdown%20%7D%2C%0A%7B%20id%3A%20%22html%22%2C%20label%3A%20%22HTML%20(webpage)%22%2C%20ext%3A%20%22html%22%2C%20mime%3A%20%22text%2Fhtml%22%2C%20render%3A%20xbeRenderHTML%20%7D%2C%0A%7B%20id%3A%20%22txt%22%2C%20label%3A%20%22Plain%20text%22%2C%20ext%3A%20%22txt%22%2C%20mime%3A%20%22text%2Fplain%22%2C%20render%3A%20xbeRenderTxt%20%7D%2C%0A%7B%20id%3A%20%22doc%22%2C%20label%3A%20%22Word%20%2F%20Google%20Docs%22%2C%20ext%3A%20%22doc%22%2C%20mime%3A%20%22application%2Fmsword%22%2C%20render%3A%20xbeRenderDoc%20%7D%0A%5D%3B%0Afunction%20xbeGetExporter(id)%20%7B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20EXPORTERS.length%3B%20i%2B%2B)%20if%20(EXPORTERS%5Bi%5D.id%20%3D%3D%3D%20id)%20return%20EXPORTERS%5Bi%5D%3B%0Areturn%20null%3B%0A%7D%0Afunction%20buildExport(records%2C%20formatId%2C%20opts)%20%7B%0Aopts%20%3D%20opts%20%7C%7C%20%7B%7D%3B%0Avar%20exp%20%3D%20xbeGetExporter(formatId)%3B%0Aif%20(!exp)%20throw%20new%20Error(%22Unknown%20format%3A%20%22%20%2B%20formatId)%3B%0Avar%20rows%20%3D%20opts.folder%20%3F%20records.filter(function%20(r)%20%7B%20return%20r.folder%20%3D%3D%3D%20opts.folder%3B%20%7D)%20%3A%20records%3B%0Avar%20content%20%3D%20exp.render(rows)%3B%0Areturn%20%7B%0Ablob%3A%20new%20Blob(%5Bcontent%5D%2C%20%7B%20type%3A%20exp.mime%20%2B%20%22%3Bcharset%3Dutf-8%22%20%7D)%2C%0Afilename%3A%20xbeExportBasename()%20%2B%20%22.%22%20%2B%20exp.ext%2C%0Acount%3A%20rows.length%0A%7D%3B%0A%7D%0Afunction%20xbeGetCookie(name)%20%7B%0Avar%20m%20%3D%20document.cookie.match(new%20RegExp(%22(%3F%3A%5E%7C%3B%20)%22%20%2B%20name%20%2B%20%22%3D(%5B%5E%3B%5D*)%22))%3B%0Areturn%20m%20%3F%20decodeURIComponent(m%5B1%5D)%20%3A%20null%3B%0A%7D%0Afunction%20xbeDiscoverOps()%20%7B%0Avar%20map%20%3D%20%7B%7D%3B%0Avar%20entries%20%3D%20(performance.getEntriesByType%20%26%26%20performance.getEntriesByType(%22resource%22))%20%7C%7C%20%5B%5D%3B%0Afor%20(var%20i%20%3D%20entries.length%20-%201%3B%20i%20%3E%3D%200%3B%20i--)%20%7B%0Avar%20u%20%3D%20entries%5Bi%5D.name%3B%0Avar%20m%20%3D%20u.match(%2F%5C%2Fi%5C%2Fapi%5C%2Fgraphql%5C%2F(%5B%5E%2F%5D%2B)%5C%2F(%5B%5E%2F%3F%5D%2B)%2F)%3B%0Aif%20(m%20%26%26%20!map%5Bm%5B2%5D%5D)%20map%5Bm%5B2%5D%5D%20%3D%20%7B%20queryId%3A%20m%5B1%5D%2C%20url%3A%20u%20%7D%3B%0A%7D%0Areturn%20map%3B%0A%7D%0Afunction%20xbeSyntheticOp(queryId%2C%20operation)%20%7B%0Areturn%20%7B%20queryId%3A%20queryId%2C%20url%3A%20location.origin%20%2B%20%22%2Fi%2Fapi%2Fgraphql%2F%22%20%2B%20queryId%20%2B%20%22%2F%22%20%2B%20operation%20%2B%20%22%3Fvariables%3D%257B%257D%22%20%7D%3B%0A%7D%0Afunction%20xbeScrapeQueryIds()%20%7B%0Avar%20set%20%3D%20%7B%7D%3B%0Atry%20%7B%0Avar%20nodes%20%3D%20document.querySelectorAll%20%3F%20document.querySelectorAll(%22script%5Bsrc%5D%22)%20%3A%20%5B%5D%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20nodes.length%3B%20i%2B%2B)%20%7B%0Avar%20s%20%3D%20nodes%5Bi%5D.src%20%7C%7C%20nodes%5Bi%5D.getAttribute(%22src%22)%3B%0Aif%20(s%20%26%26%20%2Fabs%5C.twimg%5C.com%5C%2Fresponsive-web%5C%2F%2F.test(s))%20set%5Bs%5D%20%3D%201%3B%0A%7D%0A%7D%20catch%20(e)%20%7B%7D%0Avar%20perf%20%3D%20(performance.getEntriesByType%20%26%26%20performance.getEntriesByType(%22resource%22))%20%7C%7C%20%5B%5D%3B%0Afor%20(var%20j%20%3D%200%3B%20j%20%3C%20perf.length%3B%20j%2B%2B)%20%7B%0Avar%20u%20%3D%20perf%5Bj%5D.name%3B%0Aif%20(%2Fabs%5C.twimg%5C.com%5C%2Fresponsive-web%5C%2F.*%5C.js(%5C%3F%7C%24)%2F.test(u))%20set%5Bu%5D%20%3D%201%3B%0A%7D%0Avar%20list%20%3D%20Object.keys(set).slice(0%2C%2080)%3B%0Aif%20(!list.length)%20return%20Promise.resolve(%7B%7D)%3B%0Areturn%20Promise.all(list.map(function%20(url)%20%7B%0Areturn%20fetch(url).then(function%20(r)%20%7B%20return%20r.ok%20%3F%20r.text()%20%3A%20%22%22%3B%20%7D).catch(function%20()%20%7B%20return%20%22%22%3B%20%7D)%3B%0A%7D)).then(function%20(texts)%20%7B%0Avar%20map%20%3D%20%7B%7D%3B%0Afor%20(var%20k%20%3D%200%3B%20k%20%3C%20texts.length%3B%20k%2B%2B)%20%7B%0Avar%20re%20%3D%20%2F%5C%7BqueryId%3A%22(%5B%5E%22%5D%2B)%22%2CoperationName%3A%22(%5B%5E%22%5D%2B)%22%7CoperationName%3A%22(%5B%5E%22%5D%2B)%22%2CqueryId%3A%22(%5B%5E%22%5D%2B)%22%2Fg%3B%0Avar%20m%3B%0Awhile%20((m%20%3D%20re.exec(texts%5Bk%5D))%20!%3D%3D%20null)%20%7B%0Aif%20(m%5B1%5D%20%26%26%20m%5B2%5D)%20map%5Bm%5B2%5D%5D%20%3D%20m%5B1%5D%3B%0Aelse%20if%20(m%5B3%5D%20%26%26%20m%5B4%5D)%20map%5Bm%5B3%5D%5D%20%3D%20m%5B4%5D%3B%0A%7D%0A%7D%0Areturn%20map%3B%0A%7D)%3B%0A%7D%0Afunction%20xbeEnsureOps(ops%2C%20ui)%20%7B%0Aif%20(ops.Bookmarks)%20return%20Promise.resolve(ops)%3B%0Aif%20(ui)%20ui.status.textContent%20%3D%20%22Finding%20the%20bookmarks%20endpoint%5Cu2026%22%3B%0Areturn%20xbeScrapeQueryIds().then(function%20(map)%20%7B%0Aif%20(map.Bookmarks%20%26%26%20!ops.Bookmarks)%20ops.Bookmarks%20%3D%20xbeSyntheticOp(map.Bookmarks%2C%20%22Bookmarks%22)%3B%0Aif%20(map.BookmarkFoldersSlice%20%26%26%20!ops.BookmarkFoldersSlice)%20ops.BookmarkFoldersSlice%20%3D%20xbeSyntheticOp(map.BookmarkFoldersSlice%2C%20%22BookmarkFoldersSlice%22)%3B%0Avar%20tl%20%3D%20map.BookmarkFolderTimeline%20%7C%7C%20map.bookmarkFolderTimeline%3B%0Aif%20(tl%20%26%26%20!ops.BookmarkFolderTimeline%20%26%26%20!ops.bookmarkFolderTimeline)%20ops.BookmarkFolderTimeline%20%3D%20xbeSyntheticOp(tl%2C%20%22BookmarkFolderTimeline%22)%3B%0Areturn%20ops%3B%0A%7D).catch(function%20()%20%7B%20return%20ops%3B%20%7D)%3B%0A%7D%0Afunction%20xbeInstallInterceptors(captured)%20%7B%0Afunction%20record(url)%20%7B%0Avar%20s%20%3D%20String(url%20%7C%7C%20%22%22)%3B%0Avar%20m%20%3D%20s.match(%2F%5C%2Fi%5C%2Fapi%5C%2Fgraphql%5C%2F(%5B%5E%2F%5D%2B)%5C%2F(%5B%5E%2F%3F%5D%2B)%2F)%3B%0Aif%20(m)%20captured.ops%5Bm%5B2%5D%5D%20%3D%20%7B%20queryId%3A%20m%5B1%5D%2C%20url%3A%20s.charAt(0)%20%3D%3D%3D%20%22%2F%22%20%3F%20location.origin%20%2B%20s%20%3A%20s%20%7D%3B%0A%7D%0Atry%20%7B%0Avar%20of%20%3D%20window.fetch%3B%0Aif%20(of%20%26%26%20!of.__xbe)%20%7B%0Awindow.fetch%20%3D%20function%20(input)%20%7B%0Atry%20%7B%20record(typeof%20input%20%3D%3D%3D%20%22string%22%20%3F%20input%20%3A%20(input%20%26%26%20input.url))%3B%20%7D%20catch%20(e)%20%7B%7D%0Areturn%20of.apply(this%2C%20arguments)%3B%0A%7D%3B%0Awindow.fetch.__xbe%20%3D%20true%3B%0A%7D%0A%7D%20catch%20(e)%20%7B%7D%0Atry%20%7B%0Avar%20XHR%20%3D%20window.XMLHttpRequest%3B%0Aif%20(XHR%20%26%26%20XHR.prototype%20%26%26%20XHR.prototype.open%20%26%26%20!XHR.prototype.open.__xbe)%20%7B%0Avar%20oo%20%3D%20XHR.prototype.open%3B%0AXHR.prototype.open%20%3D%20function%20(method%2C%20url)%20%7B%0Atry%20%7B%20record(url)%3B%20%7D%20catch%20(e)%20%7B%7D%0Areturn%20oo.apply(this%2C%20arguments)%3B%0A%7D%3B%0AXHR.prototype.open.__xbe%20%3D%20true%3B%0A%7D%0A%7D%20catch%20(e)%20%7B%7D%0A%7D%0Afunction%20xbeTriggerRefetch(state)%20%7B%0Atry%20%7B%0Awindow.scrollTo(0%2C%20document.documentElement.scrollHeight%20%7C%7C%201e7)%3B%0Awindow.dispatchEvent(new%20Event(%22scroll%22))%3B%0A%7D%20catch%20(e)%20%7B%7D%0Aif%20(state.nav)%20return%3B%0Astate.nav%20%3D%20true%3B%0Atry%20%7B%0Avar%20home%20%3D%20document.querySelector('a%5Bhref%3D%22%2Fhome%22%5D')%20%7C%7C%20document.querySelector('a%5Bdata-testid%3D%22AppTabBar_Home_Link%22%5D')%3B%0Avar%20goBookmarks%20%3D%20function%20()%20%7B%0Avar%20bm%20%3D%20document.querySelector('a%5Bhref%3D%22%2Fi%2Fbookmarks%22%5D')%20%7C%7C%20document.querySelector('a%5Bhref%3D%22%2Fi%2Fbookmarks%2Fall%22%5D')%3B%0Aif%20(bm)%20bm.click()%3B%0A%7D%3B%0Aif%20(home)%20%7B%20home.click()%3B%20setTimeout(goBookmarks%2C%20900)%3B%20%7D%0A%7D%20catch%20(e)%20%7B%7D%0A%7D%0Afunction%20xbeAcquireOps(ui)%20%7B%0Avar%20captured%20%3D%20%7B%20ops%3A%20%7B%7D%20%7D%3B%0Avar%20perf%20%3D%20xbeDiscoverOps()%3B%0Afor%20(var%20k%20in%20perf)%20captured.ops%5Bk%5D%20%3D%20perf%5Bk%5D%3B%0Aif%20(captured.ops.Bookmarks)%20return%20Promise.resolve(captured.ops)%3B%0AxbeInstallInterceptors(captured)%3B%0Avar%20state%20%3D%20%7B%20nav%3A%20false%20%7D%3B%0AxbeTriggerRefetch(state)%3B%0Areturn%20new%20Promise(function%20(resolve)%20%7B%0Avar%20waited%20%3D%200%3B%0A(function%20poll()%20%7B%0Aif%20(captured.ops.Bookmarks)%20return%20resolve(captured.ops)%3B%0Aif%20(waited%20%3E%3D%2015000)%20%7B%0Areturn%20xbeEnsureOps(captured.ops%2C%20ui).then(resolve)%3B%0A%7D%0Aif%20(ui)%20ui.status.textContent%20%3D%20%22Loading%20your%20bookmarks%5Cu2026%22%3B%0Awaited%20%2B%3D%20500%3B%0Aif%20(waited%20%25%202500%20%3D%3D%3D%200)%20xbeTriggerRefetch(state)%3B%0AsetTimeout(poll%2C%20500)%3B%0A%7D)()%3B%0A%7D)%3B%0A%7D%0Afunction%20xbeParseTemplate(op)%20%7B%0Avar%20url%20%3D%20new%20URL(op.url)%3B%0Avar%20variables%20%3D%20%7B%7D%3B%0Atry%20%7B%20variables%20%3D%20JSON.parse(url.searchParams.get(%22variables%22)%20%7C%7C%20%22%7B%7D%22)%3B%20%7D%20catch%20(e)%20%7B%7D%0Areturn%20%7B%0AqueryId%3A%20op.queryId%2C%0Aoperation%3A%20url.pathname.split(%22%2F%22).pop()%2C%0Abase%3A%20url.origin%20%2B%20url.pathname%2C%0Avariables%3A%20variables%2C%0Afeatures%3A%20url.searchParams.get(%22features%22)%2C%0AfieldToggles%3A%20url.searchParams.get(%22fieldToggles%22)%0A%7D%3B%0A%7D%0Afunction%20xbeBuildUrl(tpl%2C%20count%2C%20cursor)%20%7B%0Avar%20v%20%3D%20JSON.parse(JSON.stringify(tpl.variables%20%7C%7C%20%7B%7D))%3B%0Aif%20(count%20!%3D%20null)%20v.count%20%3D%20count%3B%0Aif%20(cursor)%20v.cursor%20%3D%20cursor%3B%20else%20delete%20v.cursor%3B%0Aif%20(v.includePromotedContent%20%3D%3D%20null)%20v.includePromotedContent%20%3D%20false%3B%0Avar%20url%20%3D%20new%20URL(tpl.base)%3B%0Aurl.searchParams.set(%22variables%22%2C%20JSON.stringify(v))%3B%0Aurl.searchParams.set(%22features%22%2C%20tpl.features%20%7C%7C%20JSON.stringify(XBE_FALLBACK_FEATURES))%3B%0Aif%20(tpl.fieldToggles)%20url.searchParams.set(%22fieldToggles%22%2C%20tpl.fieldToggles)%3B%0Areturn%20url.toString()%3B%0A%7D%0Afunction%20xbeRequest(url%2C%20ct0%2C%20maxRetries)%20%7B%0AmaxRetries%20%3D%20maxRetries%20%3D%3D%20null%20%3F%205%20%3A%20maxRetries%3B%0Avar%20headers%20%3D%20%7B%0Aauthorization%3A%20%22Bearer%20%22%20%2B%20XBE_BEARER%2C%0A%22x-csrf-token%22%3A%20ct0%2C%0A%22x-twitter-active-user%22%3A%20%22yes%22%2C%0A%22x-twitter-auth-type%22%3A%20%22OAuth2Session%22%2C%0A%22x-twitter-client-language%22%3A%20%22en%22%2C%0A%22content-type%22%3A%20%22application%2Fjson%22%0A%7D%3B%0Avar%20attempt%20%3D%200%3B%0Afunction%20go()%20%7B%0Areturn%20fetch(url%2C%20%7B%20headers%3A%20headers%2C%20credentials%3A%20%22include%22%20%7D).then(function%20(res)%20%7B%0Aif%20(res.status%20%3D%3D%3D%20429%20%7C%7C%20res.status%20%3D%3D%3D%20503)%20%7B%0Aif%20(attempt%20%3E%3D%20maxRetries)%20throw%20new%20Error(%22Rate%20limited%20(HTTP%20%22%20%2B%20res.status%20%2B%20%22).%22)%3B%0Avar%20reset%20%3D%20Number(res.headers.get(%22x-rate-limit-reset%22))%3B%0Avar%20now%20%3D%20Math.floor(Date.now()%20%2F%201000)%3B%0Avar%20wait%20%3D%20reset%20%26%26%20reset%20%3E%20now%20%3F%20Math.min((reset%20-%20now)%20*%201000%2C%2090000)%20%3A%20Math.min(Math.pow(2%2C%20attempt)%20*%201000%2C%2060000)%3B%0Aattempt%2B%2B%3B%0Areturn%20xbeSleep(wait).then(go)%3B%0A%7D%0Aif%20(res.status%20%3D%3D%3D%20401%20%7C%7C%20res.status%20%3D%3D%3D%20403)%20throw%20new%20Error(%22Authorization%20failed%20(HTTP%20%22%20%2B%20res.status%20%2B%20%22).%20Make%20sure%20you%20are%20logged%20into%20x.com.%22)%3B%0Aif%20(!res.ok)%20throw%20new%20Error(%22Request%20failed%3A%20HTTP%20%22%20%2B%20res.status)%3B%0Areturn%20res.json()%3B%0A%7D)%3B%0A%7D%0Areturn%20go()%3B%0A%7D%0Afunction%20xbeFetchAll(tpl%2C%20ct0%2C%20onProgress)%20%7B%0Avar%20records%20%3D%20%5B%5D%3B%0Avar%20cursor%20%3D%20null%2C%20prev%20%3D%20null%2C%20page%20%3D%200%3B%0Afunction%20step()%20%7B%0Avar%20url%20%3D%20xbeBuildUrl(tpl%2C%20100%2C%20cursor)%3B%0Areturn%20xbeRequest(url%2C%20ct0).then(function%20(json)%20%7B%0Avar%20pageEntries%20%3D%20extractTweetEntries(json)%3B%0Arecords.push.apply(records%2C%20pageEntries)%3B%0Apage%2B%2B%3B%0Aif%20(onProgress)%20onProgress(records.length%2C%20page)%3B%0Avar%20next%20%3D%20extractCursor(json)%3B%0Aif%20(!next%20%7C%7C%20next%20%3D%3D%3D%20prev%20%7C%7C%20pageEntries.length%20%3D%3D%3D%200)%20return%20records%3B%0Aprev%20%3D%20cursor%3B%20cursor%20%3D%20next%3B%0Areturn%20xbeSleep(600).then(step)%3B%0A%7D)%3B%0A%7D%0Areturn%20step()%3B%0A%7D%0Afunction%20xbeFetchFolders(ops%2C%20ct0%2C%20onProgress)%20%7B%0Avar%20assignments%20%3D%20%7B%7D%3B%0Avar%20foldersOp%20%3D%20ops.BookmarkFoldersSlice%3B%0Avar%20timelineOp%20%3D%20ops.BookmarkFolderTimeline%20%7C%7C%20ops.bookmarkFolderTimeline%3B%0Aif%20(!foldersOp%20%7C%7C%20!timelineOp)%20return%20Promise.resolve(assignments)%3B%0Avar%20foldersTpl%20%3D%20xbeParseTemplate(foldersOp)%3B%0Avar%20timelineTpl%20%3D%20xbeParseTemplate(timelineOp)%3B%0Avar%20url%20%3D%20xbeBuildUrl(foldersTpl%2C%20100%2C%20null)%3B%0Areturn%20xbeRequest(url%2C%20ct0%2C%202).then(function%20(json)%20%7B%0Avar%20folders%20%3D%20%5B%5D%3B%0Avar%20stack%20%3D%20%5Bjson%5D%2C%20seen%20%3D%20new%20Set()%3B%0Awhile%20(stack.length)%20%7B%0Avar%20node%20%3D%20stack.pop()%3B%0Aif%20(!node%20%7C%7C%20typeof%20node%20!%3D%3D%20%22object%22%20%7C%7C%20seen.has(node))%20continue%3B%0Aseen.add(node)%3B%0Aif%20(node.id%20%26%26%20node.name%20!%3D%20null%20%26%26%20node.__typename%20%3D%3D%3D%20%22BookmarkCollection%22)%20folders.push(%7B%20id%3A%20String(node.id)%2C%20name%3A%20String(node.name)%20%7D)%3B%0Afor%20(var%20k%20in%20node)%20if%20(node%5Bk%5D%20%26%26%20typeof%20node%5Bk%5D%20%3D%3D%3D%20%22object%22)%20stack.push(node%5Bk%5D)%3B%0A%7D%0Avar%20idx%20%3D%200%3B%0Afunction%20nextFolder()%20%7B%0Aif%20(idx%20%3E%3D%20folders.length)%20return%20assignments%3B%0Avar%20folder%20%3D%20folders%5Bidx%2B%2B%5D%3B%0Avar%20cursor%20%3D%20null%2C%20prev%20%3D%20null%3B%0Afunction%20page()%20%7B%0Avar%20v%20%3D%20JSON.parse(JSON.stringify(timelineTpl.variables%20%7C%7C%20%7B%7D))%3B%0Av.bookmark_collection_id%20%3D%20folder.id%3B%0Av.count%20%3D%20100%3B%0Aif%20(cursor)%20v.cursor%20%3D%20cursor%3B%20else%20delete%20v.cursor%3B%0Avar%20u%20%3D%20new%20URL(timelineTpl.base)%3B%0Au.searchParams.set(%22variables%22%2C%20JSON.stringify(v))%3B%0Au.searchParams.set(%22features%22%2C%20timelineTpl.features%20%7C%7C%20JSON.stringify(XBE_FALLBACK_FEATURES))%3B%0Aif%20(timelineTpl.fieldToggles)%20u.searchParams.set(%22fieldToggles%22%2C%20timelineTpl.fieldToggles)%3B%0Areturn%20xbeRequest(u.toString()%2C%20ct0%2C%202).then(function%20(json)%20%7B%0Avar%20pe%20%3D%20extractTweetEntries(json)%3B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20pe.length%3B%20i%2B%2B)%20assignments%5Bpe%5Bi%5D.id%5D%20%3D%20folder.name%3B%0Aif%20(onProgress)%20onProgress(folder.name)%3B%0Avar%20next%20%3D%20extractCursor(json)%3B%0Aif%20(!next%20%7C%7C%20next%20%3D%3D%3D%20prev%20%7C%7C%20pe.length%20%3D%3D%3D%200)%20return%20nextFolder()%3B%0Aprev%20%3D%20cursor%3B%20cursor%20%3D%20next%3B%0Areturn%20xbeSleep(600).then(page)%3B%0A%7D).catch(function%20()%20%7B%20return%20nextFolder()%3B%20%7D)%3B%0A%7D%0Areturn%20page()%3B%0A%7D%0Areturn%20nextFolder()%3B%0A%7D).catch(function%20()%20%7B%20return%20assignments%3B%20%7D)%3B%0A%7D%0Afunction%20xbeBuildUI()%20%7B%0Avar%20existing%20%3D%20document.getElementById(%22xbe-panel%22)%3B%0Aif%20(existing%20%26%26%20existing.parentNode)%20existing.parentNode.removeChild(existing)%3B%0Avar%20panel%20%3D%20document.createElement(%22div%22)%3B%0Apanel.id%20%3D%20%22xbe-panel%22%3B%0Apanel.setAttribute(%22style%22%2C%20%5B%0A%22position%3Afixed%22%2C%20%22top%3A16px%22%2C%20%22right%3A16px%22%2C%20%22z-index%3A2147483647%22%2C%20%22width%3A320px%22%2C%0A%22background%3A%2315202b%22%2C%20%22color%3A%23fff%22%2C%20%22border%3A1px%20solid%20%2338444d%22%2C%20%22border-radius%3A14px%22%2C%0A%22box-shadow%3A0%2010px%2040px%20rgba(0%2C0%2C0%2C.5)%22%2C%20%22font%3A14px%2F1.5%20-apple-system%2Csystem-ui%2Csans-serif%22%2C%0A%22padding%3A16px%22%0A%5D.join(%22%3B%22))%3B%0Avar%20title%20%3D%20document.createElement(%22div%22)%3B%0Atitle.textContent%20%3D%20XBE_APP_NAME%3B%0Atitle.setAttribute(%22style%22%2C%20%22font-weight%3A700%3Bfont-size%3A15px%3Bmargin-bottom%3A8px%3Bdisplay%3Aflex%3Bjustify-content%3Aspace-between%3Balign-items%3Acenter%22)%3B%0Avar%20close%20%3D%20document.createElement(%22span%22)%3B%0Aclose.textContent%20%3D%20%22%5Cu2715%22%3B%0Aclose.setAttribute(%22style%22%2C%20%22cursor%3Apointer%3Bcolor%3A%238899a6%3Bpadding%3A0%204px%22)%3B%0Aclose.addEventListener(%22click%22%2C%20function%20()%20%7B%20if%20(panel.parentNode)%20panel.parentNode.removeChild(panel)%3B%20%7D)%3B%0Atitle.appendChild(close)%3B%0Apanel.appendChild(title)%3B%0Avar%20status%20%3D%20document.createElement(%22div%22)%3B%0Astatus.id%20%3D%20%22xbe-status%22%3B%0Astatus.setAttribute(%22style%22%2C%20%22color%3A%238899a6%3Bmargin-bottom%3A10px%22)%3B%0Astatus.textContent%20%3D%20%22Starting%5Cu2026%22%3B%0Apanel.appendChild(status)%3B%0Avar%20barWrap%20%3D%20document.createElement(%22div%22)%3B%0AbarWrap.setAttribute(%22style%22%2C%20%22height%3A6px%3Bbackground%3A%2338444d%3Bborder-radius%3A999px%3Boverflow%3Ahidden%3Bmargin-bottom%3A12px%22)%3B%0Avar%20bar%20%3D%20document.createElement(%22div%22)%3B%0Abar.id%20%3D%20%22xbe-bar%22%3B%0Abar.setAttribute(%22style%22%2C%20%22height%3A100%25%3Bwidth%3A30%25%3Bbackground%3A%231d9bf0%3Bborder-radius%3A999px%3Btransition%3Awidth%20.3s%22)%3B%0AbarWrap.appendChild(bar)%3B%0Apanel.appendChild(barWrap)%3B%0Avar%20formatRow%20%3D%20document.createElement(%22div%22)%3B%0AformatRow.id%20%3D%20%22xbe-formats%22%3B%0AformatRow.setAttribute(%22style%22%2C%20%22display%3Aflex%3Bflex-wrap%3Awrap%3Bgap%3A6px%22)%3B%0Apanel.appendChild(formatRow)%3B%0Avar%20note%20%3D%20document.createElement(%22div%22)%3B%0Anote.setAttribute(%22style%22%2C%20%22color%3A%238899a6%3Bfont-size%3A11px%3Bmargin-top%3A12px%22)%3B%0Anote.textContent%20%3D%20%22Runs%20locally%20in%20your%20browser.%20Nothing%20is%20uploaded.%22%3B%0Apanel.appendChild(note)%3B%0Adocument.body.appendChild(panel)%3B%0Areturn%20%7B%20panel%3A%20panel%2C%20status%3A%20status%2C%20bar%3A%20bar%2C%20formatRow%3A%20formatRow%20%7D%3B%0A%7D%0Afunction%20xbeProceed(ops%2C%20ct0%2C%20ui)%20%7B%0Avar%20tpl%20%3D%20xbeParseTemplate(ops.Bookmarks)%3B%0Avar%20records%20%3D%20%5B%5D%3B%0Aui.status.textContent%20%3D%20%22Fetching%20bookmarks%5Cu2026%22%3B%0AxbeFetchAll(tpl%2C%20ct0%2C%20function%20(count%2C%20page)%20%7B%0Aui.status.textContent%20%3D%20%22Fetched%20%22%20%2B%20count%20%2B%20%22%20bookmarks%20(page%20%22%20%2B%20page%20%2B%20%22)%5Cu2026%22%3B%0A%7D).then(function%20(recs)%20%7B%0Arecords%20%3D%20recs%3B%0Aui.status.textContent%20%3D%20%22Looking%20up%20folders%5Cu2026%22%3B%0Areturn%20xbeFetchFolders(ops%2C%20ct0%2C%20function%20(name)%20%7B%0Aui.status.textContent%20%3D%20%22Mapping%20folder%3A%20%22%20%2B%20name%20%2B%20%22%5Cu2026%22%3B%0A%7D).then(function%20(assignments)%20%7B%0Afor%20(var%20i%20%3D%200%3B%20i%20%3C%20records.length%3B%20i%2B%2B)%20if%20(assignments%5Brecords%5Bi%5D.id%5D)%20records%5Bi%5D.folder%20%3D%20assignments%5Brecords%5Bi%5D.id%5D%3B%0A%7D)%3B%0A%7D).then(function%20()%20%7B%0Aui.bar.style.width%20%3D%20%22100%25%22%3B%0Aui.status.textContent%20%3D%20records.length%20%2B%20%22%20bookmarks%20ready.%20Pick%20a%20format%3A%22%3B%0AEXPORTERS.forEach(function%20(exp)%20%7B%0Avar%20btn%20%3D%20document.createElement(%22button%22)%3B%0Abtn.textContent%20%3D%20exp.ext.toUpperCase()%3B%0Abtn.title%20%3D%20exp.label%3B%0Abtn.setAttribute(%22style%22%2C%20%22flex%3A1%200%20auto%3Bmin-width%3A56px%3Bbackground%3A%231d9bf0%3Bcolor%3A%23fff%3Bborder%3A0%3Bborder-radius%3A999px%3Bpadding%3A8px%2010px%3Bfont-weight%3A600%3Bcursor%3Apointer%22)%3B%0Abtn.addEventListener(%22click%22%2C%20function%20()%20%7B%0Avar%20out%20%3D%20buildExport(records%2C%20exp.id)%3B%0Avar%20url%20%3D%20URL.createObjectURL(out.blob)%3B%0Avar%20a%20%3D%20document.createElement(%22a%22)%3B%0Aa.href%20%3D%20url%3B%20a.download%20%3D%20out.filename%3B%0Adocument.body.appendChild(a)%3B%20a.click()%3B%20a.remove()%3B%0AsetTimeout(function%20()%20%7B%20URL.revokeObjectURL(url)%3B%20%7D%2C%202000)%3B%0Aui.status.textContent%20%3D%20%22Downloaded%20%22%20%2B%20out.count%20%2B%20%22%20as%20%22%20%2B%20out.filename%3B%0A%7D)%3B%0Aui.formatRow.appendChild(btn)%3B%0A%7D)%3B%0A%7D).catch(function%20(err)%20%7B%0Aui.bar.style.background%20%3D%20%22%23e0245e%22%3B%0Aui.status.textContent%20%3D%20(err%20%26%26%20err.message)%20%3F%20err.message%20%3A%20String(err)%3B%0A%7D)%3B%0A%7D%0Afunction%20xbeAskExtension(cb)%20%7B%0Avar%20done%20%3D%20false%3B%0Avar%20timer%20%3D%20setTimeout(function%20()%20%7B%20if%20(!done)%20cb(false)%3B%20%7D%2C%20450)%3B%0Afunction%20onAck(e)%20%7B%0Aif%20(!e%20%7C%7C%20!e.detail)%20return%3B%0Adone%20%3D%20true%3B%0AclearTimeout(timer)%3B%0Adocument.removeEventListener(%22xbe-export-ack%22%2C%20onAck)%3B%0Acb(!!e.detail.handled)%3B%0A%7D%0Adocument.addEventListener(%22xbe-export-ack%22%2C%20onAck)%3B%0Atry%20%7B%20document.dispatchEvent(new%20CustomEvent(%22xbe-export-request%22))%3B%20%7D%20catch%20(err)%20%7B%20onAck(%7B%20detail%3A%20%7B%20handled%3A%20false%20%7D%20%7D)%3B%20%7D%0A%7D%0Afunction%20xbeRun()%20%7B%0Aif%20(location.hostname.indexOf(%22x.com%22)%20%3D%3D%3D%20-1%20%26%26%20location.hostname.indexOf(%22twitter.com%22)%20%3D%3D%3D%20-1)%20%7B%0AxbeAskExtension(function%20(handled)%20%7B%0Aif%20(handled)%20return%3B%0Alocation.href%20%3D%20%22https%3A%2F%2Fx.com%2Fi%2Fbookmarks%23xbe-auto%22%3B%0A%7D)%3B%0Areturn%3B%0A%7D%0Avar%20ct0%20%3D%20xbeGetCookie(%22ct0%22)%3B%0Aif%20(!ct0)%20%7B%20alert(%22Couldn't%20find%20your%20X%20session.%20Make%20sure%20you%20are%20logged%20into%20x.com%2C%20then%20try%20again.%22)%3B%20return%3B%20%7D%0Avar%20ui%20%3D%20xbeBuildUI()%3B%0Aif%20(!ui)%20return%3B%20%2F%2F%20panel%20already%20open%0Aui.status.textContent%20%3D%20%22Loading%20your%20bookmarks%5Cu2026%22%3B%0AxbeAcquireOps(ui).then(function%20(ops)%20%7B%0Aif%20(!ops.Bookmarks)%20%7B%0Aui.status.textContent%20%3D%20%22Couldn't%20reach%20the%20bookmarks%20API.%22%3B%0Aui.bar.style.width%20%3D%20%22100%25%22%3B%0Aui.bar.style.background%20%3D%20%22%23f5a623%22%3B%0Avar%20hint%20%3D%20document.createElement(%22div%22)%3B%0Ahint.setAttribute(%22style%22%2C%20%22color%3A%238899a6%3Bmargin-top%3A8px%3Bfont-size%3A13px%22)%3B%0Ahint.innerHTML%20%3D%20'Scroll%20your%20Bookmarks%20once%2C%20then%20click%20again.%20If%20it%20keeps%20failing%2C%20your%20browser%20is%20blocking%20it%20(CSP)%20%26mdash%3B%20use%20the%20%3Cb%3Ebrowser%20extension%3C%2Fb%3E%20(see%20README)%2C%20which%20always%20works.'%3B%0Aui.formatRow.appendChild(hint)%3B%0Areturn%3B%0A%7D%0AxbeProceed(ops%2C%20ct0%2C%20ui)%3B%0A%7D)%3B%0A%7D%0Avar%20XBE_IS_BROWSER%20%3D%20(typeof%20window%20!%3D%3D%20%22undefined%22)%20%26%26%20(typeof%20document%20!%3D%3D%20%22undefined%22)%20%26%26%20(typeof%20location%20!%3D%3D%20%22undefined%22)%3B%0Aif%20(XBE_IS_BROWSER)%20%7B%20xbeRun()%3B%20%7D%7D()%3B">📑
+        Export X bookmarks</a></p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">2</span>
+          <div>
+            <p class="step-title">Open x.com and go to your Bookmarks page</p>
+            <p class="step-body">Log in, then open
+              <a href="https://x.com/i/bookmarks" target="_blank" rel="noopener">x.com/i/bookmarks</a>
+              and let the page finish loading.</p>
+          </div>
+        </div>
+        <svg class="illus" viewBox="0 0 620 220" role="img"
+          aria-label="Open x.com bookmarks page while logged in.">
+          <rect x="10" y="10" width="600" height="44" rx="10" fill="#1b2733" stroke="#38444d" />
+          <rect x="28" y="24" width="420" height="16" rx="8" fill="#2f3b47" />
+          <text x="44" y="36" font-family="system-ui,sans-serif" font-size="12" fill="#1d9bf0">x.com/i/bookmarks</text>
+          <rect x="10" y="64" width="600" height="146" rx="12" fill="#0f1419" stroke="#38444d" />
+          <rect x="24" y="78" width="120" height="118" rx="10" fill="#15202b" stroke="#38444d" />
+          <text x="84" y="100" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11"
+            fill="#8899a6">Menu</text>
+          <rect x="36" y="112" width="96" height="22" rx="6" fill="rgba(29,155,240,.2)" stroke="#1d9bf0" />
+          <text x="84" y="127" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11"
+            font-weight="700" fill="#1d9bf0">Bookmarks</text>
+          <rect x="160" y="78" width="436" height="118" rx="10" fill="#15202b" stroke="#38444d" />
+          <text x="180" y="104" font-family="system-ui,sans-serif" font-size="16" font-weight="700"
+            fill="#e7e9ea">Bookmarks</text>
+          <rect x="180" y="116" width="396" height="28" rx="8" fill="#22303c" />
+          <rect x="180" y="152" width="396" height="28" rx="8" fill="#22303c" />
+          <text x="378" y="200" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11"
+            fill="#5a6b7b">you must be on this page</text>
+        </svg>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card">
+        <div class="step-head">
+          <span class="step-num">3</span>
+          <div>
+            <p class="step-title">Click <b>Extractor</b> in your bookmarks bar</p>
+            <p class="step-body">While you&rsquo;re on the Bookmarks page, click the bookmark you installed in
+              step&nbsp;1. It extracts <b>X &middot; Bookmarks</b> for now &mdash; more data types later. Press
+              <span class="pill">Ctrl/&#8984; + Shift + B</span> if the bar is hidden.</p>
+          </div>
+        </div>
+        <svg class="illus" viewBox="0 0 620 200" role="img"
+          aria-label="Click Extractor in your browser bookmarks bar while on x.com.">
+          <rect x="10" y="12" width="600" height="78" rx="12" fill="#1b2733" stroke="#38444d" />
+          <rect x="24" y="58" width="74" height="22" rx="6" fill="#22303c" />
+          <text x="61" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#8899a6">&#9733; News</text>
+          <rect x="106" y="56" width="158" height="26" rx="13" fill="#1d9bf0" stroke="#fff" stroke-width="2" />
+          <text x="185" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            font-weight="700" fill="#fff">Extractor</text>
+          <rect x="274" y="58" width="74" height="22" rx="6" fill="#22303c" />
+          <text x="311" y="73" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#8899a6">&#9733; Mail</text>
+          <path d="M185 88 v 18" stroke="#1d9bf0" stroke-width="2" marker-end="url(#arr)" />
+          <path d="M185 118 l 0 24 l 8 -8 l 6 12 l 5 -2 l -6 -12 l 11 0 z" fill="#fff" stroke="#0f1419"
+            stroke-width="1.5" />
+          <text x="220" y="132" font-family="system-ui,sans-serif" font-size="13" font-weight="600"
+            fill="#1d9bf0">click here</text>
+          <rect x="10" y="108" width="600" height="82" rx="12" fill="#0f1419" stroke="#38444d" opacity="0.6" />
+          <text x="310" y="162" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13"
+            fill="#8899a6">x.com/i/bookmarks (page underneath)</text>
+        </svg>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card done">
+        <div class="step-head">
+          <span class="step-num">4</span>
+          <div>
+            <p class="step-title">Congratulations &mdash; it works! Pick a format and export</p>
+            <p class="step-body">A panel appears on the right, fetches all your bookmarks, then shows format buttons.
+              Click one to download. Run it again any time you&rsquo;re on x.com.</p>
+          </div>
+        </div>
+        <svg class="illus" viewBox="0 0 620 220" role="img"
+          aria-label="Export panel with format buttons appears on x.com.">
+          <rect x="10" y="20" width="380" height="180" rx="12" fill="#0f1419" stroke="#38444d" />
+          <rect x="28" y="44" width="344" height="24" rx="6" fill="#22303c" />
+          <rect x="28" y="78" width="344" height="24" rx="6" fill="#22303c" />
+          <rect x="28" y="112" width="344" height="24" rx="6" fill="#22303c" />
+          <text x="200" y="170" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12"
+            fill="#5a6b7b">your bookmarks</text>
+          <rect x="410" y="20" width="200" height="180" rx="14" fill="#15202b" stroke="#38444d" />
+          <text x="430" y="48" font-family="system-ui,sans-serif" font-size="13" font-weight="700"
+            fill="#e7e9ea">Extractor</text>
+          <text x="430" y="66" font-family="system-ui,sans-serif" font-size="10" fill="#8899a6">X &middot; Bookmarks</text>
+          <text x="430" y="72" font-family="system-ui,sans-serif" font-size="11" fill="#8899a6">142 bookmarks ready</text>
+          <rect x="430" y="84" width="160" height="6" rx="3" fill="#38444d" />
+          <rect x="430" y="84" width="160" height="6" rx="3" fill="#1d9bf0" />
+          <rect x="430" y="102" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="453" y="118" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">JSON</text>
+          <rect x="482" y="102" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="505" y="118" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">CSV</text>
+          <rect x="534" y="102" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="557" y="118" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">MD</text>
+          <rect x="430" y="132" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="453" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">HTML</text>
+          <rect x="482" y="132" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="505" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">TXT</text>
+          <rect x="534" y="132" width="46" height="24" rx="12" fill="#1d9bf0" />
+          <text x="557" y="148" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10"
+            font-weight="700" fill="#fff">DOC</text>
+          <text x="510" y="178" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11"
+            fill="#00ba7c" font-weight="600">&#10003; ready to download</text>
+        </svg>
+      </div>
+
+    </div>
+
+    <div class="note">No sign-up, no API keys. Your login never leaves your browser, and nothing is uploaded anywhere.
+      Extractor runs locally &mdash; one platform and data type at a time.</div>
+
+    <h2>Export formats</h2>
+    <div class="grid">
+      <div class="fmt"><b>JSON</b><span>Full structured data</span></div>
+      <div class="fmt"><b>NDJSON</b><span>One record per line</span></div>
+      <div class="fmt"><b>CSV</b><span>Sheets &amp; Excel</span></div>
+      <div class="fmt"><b>Markdown</b><span>Obsidian / Notion</span></div>
+      <div class="fmt"><b>HTML</b><span>Browsable page</span></div>
+      <div class="fmt"><b>Text</b><span>Plain .txt</span></div>
+      <div class="fmt"><b>Word / Docs</b><span>Open in Google Docs</span></div>
+    </div>
+
+    <h2>Get it into Google Docs</h2>
+    <p>Download the <b>Word / Docs</b> file, upload it to Google Drive, then choose <b>Open with &rarr; Google Docs</b>.
+      Drive converts it into a fully editable document. The HTML file works the same way.</p>
+
+    <h2>Browser extension <span class="badge-soon">Web Store soon</span></h2>
+    <div class="coming-soon">
+      <p>A one-click Chrome extension is in the works for every Extractor module. You can already load it locally
+        for development &mdash; see the <a href="https://github.com/YOUR_USERNAME/extractor">README</a>. For now, the
+        bookmarklet above is the easiest way to export <b>X &middot; Bookmarks</b>.</p>
+    </div>
+
+    <footer>
+      Open source (MIT). Uses each platform&rsquo;s internal endpoints with your own session for personal data export.
+      Platforms may change them at any time. No analytics, no servers.
+    </footer>
+  </main>
+</body>
+
+</html>
