@@ -70,19 +70,24 @@ to Firebase Hosting.
 3. In [Firebase Console](https://console.firebase.google.com) → your project →
    **Project settings** → **Service accounts** → **Generate new private key**.
    Download the JSON file.
-4. On GitHub: **Settings → Secrets and variables → Actions → New repository secret**
-   - Name: `FIREBASE_SERVICE_ACCOUNT` (exact spelling, case-sensitive)
-   - Value: paste the **entire** JSON file contents (starts with `{` and includes `"private_key"`)
-5. Push to `main` again (or **Re-run all jobs** from the Actions tab).
+4. On GitHub: **Settings → Secrets and variables → Actions**
+   - **Secrets → New repository secret**
+     - Name: `FIREBASE_SERVICE_ACCOUNT` (exact spelling, case-sensitive)
+     - Value: paste the **entire** JSON file contents (starts with `{` and includes `"private_key"`)
+   - **Variables → New repository variable**
+     - Name: `ENABLE_FIREBASE_DEPLOY`
+     - Value: `true`
+5. Push to `main` again, or **Actions → CI and Deploy → Run workflow**.
 
-Until that secret exists, the **ci** job still runs (build + test) but **deploy** is skipped.
+Until both the secret and variable are set, only the **ci** job runs (build + test); **deploy** is skipped.
 
 ### Troubleshooting
 
 | Error | Fix |
 | --- | --- |
-| `Input required and not supplied: firebaseServiceAccount` | Add the `FIREBASE_SERVICE_ACCOUNT` secret (step 4 above). |
-| Workflow green but site not updated | Open Actions → latest run → confirm the **deploy** job ran (not only **ci**). |
+| `Input required and not supplied: firebaseServiceAccount` | Add `FIREBASE_SERVICE_ACCOUNT` secret and set `ENABLE_FIREBASE_DEPLOY=true`. |
+| `Unrecognized named-value: 'secrets'` in workflow | Fixed — deploy is gated by variable `ENABLE_FIREBASE_DEPLOY`, not a secrets check. |
+| Workflow green but site not updated | Confirm the **deploy** job ran (not only **ci**). |
 | Permission denied on deploy | In Firebase Console → IAM, ensure the service account has **Firebase Hosting Admin**. |
 
 The workflow uses project id `xtractor-78c0f` from `.firebaserc`. If you change

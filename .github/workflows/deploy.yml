@@ -1,8 +1,9 @@
-# CI on every push to main. Deploy only after FIREBASE_SERVICE_ACCOUNT is set.
+# CI on every push to main.
+# Deploy runs when repository variable ENABLE_FIREBASE_DEPLOY=true (and secret is set).
 #
-# Required secret (repo → Settings → Secrets and variables → Actions):
-#   FIREBASE_SERVICE_ACCOUNT = full JSON from Firebase Console →
-#   Project settings → Service accounts → Generate new private key
+# Setup (repo → Settings → Secrets and variables → Actions):
+#   Secret:  FIREBASE_SERVICE_ACCOUNT = full service-account JSON from Firebase Console
+#   Variable: ENABLE_FIREBASE_DEPLOY = true   (after the secret is added)
 #
 # See HOSTING.md for step-by-step setup.
 
@@ -12,6 +13,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   ci:
@@ -32,7 +34,7 @@ jobs:
   deploy:
     needs: ci
     runs-on: ubuntu-latest
-    if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+    if: ${{ vars.ENABLE_FIREBASE_DEPLOY == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
