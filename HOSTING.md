@@ -71,9 +71,19 @@ to Firebase Hosting.
    **Project settings** → **Service accounts** → **Generate new private key**.
    Download the JSON file.
 4. On GitHub: **Settings → Secrets and variables → Actions → New repository secret**
-   - Name: `FIREBASE_SERVICE_ACCOUNT`
-   - Value: paste the **entire** JSON file contents
-5. Push to `main` again (or re-run the workflow from the Actions tab).
+   - Name: `FIREBASE_SERVICE_ACCOUNT` (exact spelling, case-sensitive)
+   - Value: paste the **entire** JSON file contents (starts with `{` and includes `"private_key"`)
+5. Push to `main` again (or **Re-run all jobs** from the Actions tab).
+
+Until that secret exists, the **ci** job still runs (build + test) but **deploy** is skipped.
+
+### Troubleshooting
+
+| Error | Fix |
+| --- | --- |
+| `Input required and not supplied: firebaseServiceAccount` | Add the `FIREBASE_SERVICE_ACCOUNT` secret (step 4 above). |
+| Workflow green but site not updated | Open Actions → latest run → confirm the **deploy** job ran (not only **ci**). |
+| Permission denied on deploy | In Firebase Console → IAM, ensure the service account has **Firebase Hosting Admin**. |
 
 The workflow uses project id `xtractor-78c0f` from `.firebaserc`. If you change
 projects, update both `.firebaserc` and `projectId` in the workflow file.
